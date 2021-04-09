@@ -5,12 +5,17 @@ class PostsController < ApplicationController
   end
 
   def edit
+    @post = Post.find_by_id(params[:id])
   end
 
   def update
-    @post.update(post_params)
-
-    redirect_to post_path(@post)
+    @post = Post.find_by_id(params[:id])
+    if @post.update(post_params) && @post.valid?
+      @post.save
+      redirect_to post_path(@post)
+    else
+      render :edit
+    end
   end
 
   private
